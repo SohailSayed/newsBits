@@ -25,7 +25,7 @@ def home():
 
             summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
             summary = summarizer(originalArticle, max_length=130, min_length=30, do_sample=False)
-            session["summary"] = summary
+            session["summary"] = summary[0]['summary_text']
         return redirect(url_for("source"))
     else:
         return render_template("index.html")
@@ -37,7 +37,7 @@ def source():
     #     return "<h1>You have selected {source}</h1>".format(source)
     if "summary" in session:
         summary = session["summary"]
-        return "<p>{summary}</p>".format(summary)
+        return "<p>{0}</p>".format(summary)
     else:
         return redirect(url_for(home))
 
