@@ -2,15 +2,17 @@
 <html>
     <body>
         <h1>
-            Here's a summarized article from {{source}}!
+            Today's news summary from {{source}}!
         </h1>
-        <h2>
-            <a href={{articleURL}}>
-                {{title}}
-            </a>
-        </h2>
-        <p>
-            {{summary}}
-        </p>
+        {% for index in range(titles| length) %}
+            <h2>
+                <a href={{urls[index]}}>
+                    {{titles[index]}}
+                </a>
+            </h2>
+            <p>
+                {{summaries[index]}}
+            </p>
+        {% endfor %}
     </body>
 </html>
