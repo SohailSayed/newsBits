@@ -1,7 +1,7 @@
 import requests
 from transformers import pipeline
-from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, redirect, url_for, session
+from newspaper import Article
 
 app = Flask(__name__)
 app.secret_key = "testytest"
@@ -31,39 +31,34 @@ def home():
 
             titles = []
             urls = []
-            summaries = []
             for article in parsedResponse:
                 titles.append(article['title'])
                 urls.append(article['url'])
-                r = requests.get(article['url'])
-                soup = BeautifulSoup(r.content, 'html.parser')
-
-                try:
-                    originalArticle = soup.find("div", class_ = "story").get_text()
-                except AttributeError:
-                    titles.pop()
-                    urls.pop()
-                    pass
-                
-                summaries.append(summarize_text(originalArticle, 130))
             session["titles"] = titles
             session["urls"] = urls
-            session["summaries"] = summaries
         return redirect(url_for("source"))
     else:
         return render_template("index.html")
 
-@app.route("/source")
+@app.route("/source", methods=["POST", "GET"])
 def source():
     if "titles" in session:
         titles = session["titles"]
     if "urls" in session:
         urls = session["urls"]
-    if "summaries" in session:
-        summaries = session["summaries"]
     if "source" in session:
         source = session["source"]
-        return render_template("summary.html", source=source, titles=titles, urls=urls, summaries=summaries)
+        if request.method == "POST":
+            articleURL = request.form["articleURL"]
+            articleData = Article(articleURL)
+            articleData.download()
+            articleData.parse()
+            articleText = articleData.text
+            
+            summary = summarize_text(articleText, 130)
+            return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
+        else:
+            return render_template("summary.html", source=source, titles=titles, urls=urls, summary=False)
     else:
         return redirect(url_for(home))
 
