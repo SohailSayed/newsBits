@@ -58,8 +58,7 @@ tensorboard==2.10.1
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
 tensorflow-estimator==2.10.0
-# tensorflow-macos==2.10.0
-tensorflow==2.10.0
+tensorflow-cpu==2.10.0
 # https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-2.10.0-cp310-cp310-macosx_10_14_x86_64.whl
 termcolor==2.1.0
 tinysegmenter==0.3
