@@ -54,7 +54,7 @@ requests-oauthlib==1.3.1
 rq==1.11.1
 rsa==4.9
 sgmllib3k==1.0.0
-six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
+six 
 soupsieve==2.3.2.post1
 SQLAlchemy==1.4.44
 tensorboard==2.10.1
