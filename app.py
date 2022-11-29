@@ -2,9 +2,12 @@ import requests
 from transformers import pipeline
 from flask import Flask, render_template, request, redirect, url_for, session
 from newspaper import Article
+from rq import Queue
+from tasks import count
 
 app = Flask(__name__)
 app.secret_key = "testytest"
+q = Queue(connection=conn)
 
 def summarize_text(text: str, max_len: int) -> str:
     summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
@@ -71,7 +74,8 @@ def source():
             articleData.parse()
             articleText = articleData.text
             
-            summary = summarize_text(articleText, 130)
+            # summary = summarize_text(articleText, 130)
+            summary = count.delay(articleText)
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
         else:
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=False)
