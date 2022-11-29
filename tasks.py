@@ -7,5 +7,6 @@ app.conf.update(BROKER_URL=os.environ['REDIS_URL'],
 
 @app.task
 def count(text):
+    print(len(text))
     return len(text)
 
