@@ -7,7 +7,6 @@ from tasks import count
 
 app = Flask(__name__)
 app.secret_key = "testytest"
-q = Queue(connection=conn)
 
 def summarize_text(text: str, max_len: int) -> str:
     summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
