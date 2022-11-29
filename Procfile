@@ -1,2 +1,2 @@
 web: gunicorn app:app
-worker: celery -app tasks worker
+worker: celery --app tasks worker
