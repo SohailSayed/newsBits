@@ -3,15 +3,19 @@ from transformers import pipeline
 from flask import Flask, render_template, request, redirect, url_for, session
 from newspaper import Article
 from rq import Queue
-from tasks import summarize
 
 app = Flask(__name__)
 app.secret_key = "testytest"
+API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+headers = {"Authorization": "Bearer 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"}
+
+def query(payload):
+	response = requests.post(API_URL, headers=headers, json=payload)
+	return response.json()
 
 def summarize_text(text: str, max_len: int) -> str:
-    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
     try:
-        summary = summarizer(text, max_length=max_len, min_length=10, do_sample=False)
+        summary = query({"inputs" : text, "max_length" : max_len,})
         return summary[0]["summary_text"]
     except:
         return summarize_text(text=text[:(len(text) // 2)], max_len=max_len//2) + summarize_text(text=text[(len(text) // 2):], max_len=max_len//2)
@@ -74,7 +78,7 @@ def source():
             articleText = articleData.text
             
             # summary = summarize_text(articleText, 130)
-            summary = summarize.delay(articleText, 130)
+            summary = summarize_text.delay(articleText, 130)
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
         else:
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=False)
