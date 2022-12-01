@@ -2,7 +2,6 @@ import requests
 from transformers import pipeline
 from flask import Flask, render_template, request, redirect, url_for, session
 from newspaper import Article
-from rq import Queue
 
 app = Flask(__name__)
 app.secret_key = "testytest"
