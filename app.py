@@ -78,7 +78,7 @@ def source():
             articleText = articleData.text
             
             # summary = summarize_text(articleText, 130)
-            summary = summarize_text.delay(articleText, 130)
+            summary = summarize_text(articleText, 130)
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
         else:
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=False)
