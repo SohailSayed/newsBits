@@ -10,14 +10,7 @@
                     {{titles[index]}}
                 </a>
             </h2>
-            {% if summary and articleURL == urls[index] %}
-            <p>{{summary}}</p>
-            {% else %}
-            <form action="/source" method="post">
-                <input type="hidden" value={{urls[index]}} name="articleURL">
-                <input type="submit" value="Generate Summary">
-            </form>
-            {% endif %}
+            <p>{{summaries[index]}}</p>
         {% endfor %}
     </body>
 </html>

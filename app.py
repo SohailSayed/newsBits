@@ -52,11 +52,19 @@ def home():
 
         titles = []
         urls = []
+        summaries = []
         for article in parsedResponse:
             titles.append(article['title'])
             urls.append(article['url'])
+
+            articleData = Article(article['url'])
+            articleData.download()
+            articleData.parse()
+            articleText = articleData.text
+            summaries.append(summarize_text(articleText, 130))
         session["titles"] = titles
         session["urls"] = urls
+        session["summaries"] = summaries
         return redirect(url_for("source"))
     else:
         return render_template("index.html")
@@ -67,20 +75,23 @@ def source():
         titles = session["titles"]
     if "urls" in session:
         urls = session["urls"]
+    if "summaries" in session:
+        summaries = session["summaries"]
     if "source" in session:
         source = session["source"]
-        if request.method == "POST":
-            articleURL = request.form["articleURL"]
-            articleData = Article(articleURL)
-            articleData.download()
-            articleData.parse()
-            articleText = articleData.text
+        # if request.method == "POST":
+        #     articleURL = request.form["articleURL"]
+        #     articleData = Article(articleURL)
+        #     articleData.download()
+        #     articleData.parse()
+        #     articleText = articleData.text
             
-            # summary = summarize_text(articleText, 130)
-            summary = summarize_text(articleText, 130)
-            return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
-        else:
-            return render_template("summary.html", source=source, titles=titles, urls=urls, summary=False)
+        #     # summary = summarize_text(articleText, 130)
+        #     summary = summarize_text(articleText, 130)
+        #     return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
+        # else:
+        #     return render_template("summary.html", source=source, titles=titles, urls=urls, summary=False)
+        return render_template("summary.html", source=source, titles=titles, urls=urls, summaries=summaries)
     else:
         return redirect(url_for(home))
 
