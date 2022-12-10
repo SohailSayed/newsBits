@@ -2,12 +2,12 @@
 <html>
     <body>
         <h1>
-            Today's articles from {{source}}:
+            Today's article summaries from {{source}}:
         </h1>
         {% for index in range(titles| length) %}
             <h2>
                 <a href={{urls[index]}}>
-                    {{titles[index]}}
+                    {{titles[index]}} [click for full article]
                 </a>
             </h2>
             <p>{{summaries[index]}}</p>
