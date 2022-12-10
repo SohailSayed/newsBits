@@ -1,12 +1,16 @@
 import requests
+import os
 from transformers import pipeline
 from flask import Flask, render_template, request, redirect, url_for, session
 from newspaper import Article
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
-app.secret_key = "testytest"
+app.secret_key = os.getenv('FLASK_SECRET_KEY')
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": "Bearer {}".format(os.getenv('INFERENCE_API_KEY'))}
+NEWSAPI_API_KEY = os.getenv('NEWSAPI_API_KEY')
 
 def query(payload):
 	response = requests.post(API_URL, headers=headers, json=payload)
@@ -29,23 +33,23 @@ def home():
         if source == "CBC":
             url = ('https://newsapi.org/v2/top-headlines?'
                 'sources=cbc-news&'
-                'apiKey=934c6a1a98ca46efa144a9957f555fdb')
+                'apiKey={}'.format(NEWSAPI_API_KEY))
         if source == "CNN":
             url = ('https://newsapi.org/v2/top-headlines?'
                 'sources=cnn&'
-                'apiKey=934c6a1a98ca46efa144a9957f555fdb')
+                'apiKey={}'.format(NEWSAPI_API_KEY))
         if source == "BBC":
             url = ('https://newsapi.org/v2/top-headlines?'
                 'sources=bbc-news&'
-                'apiKey=934c6a1a98ca46efa144a9957f555fdb')
+                'apiKey={}'.format(NEWSAPI_API_KEY))
         if source == "Reuters":
             url = ('https://newsapi.org/v2/top-headlines?'
                 'sources=reuters&'
-                'apiKey=934c6a1a98ca46efa144a9957f555fdb')
+                'apiKey={}'.format(NEWSAPI_API_KEY))
         if source == "Associated Press":
             url = ('https://newsapi.org/v2/top-headlines?'
                 'sources=associated-press&'
-                'apiKey=934c6a1a98ca46efa144a9957f555fdb')
+                'apiKey={}'.format(NEWSAPI_API_KEY))
         
         response = requests.get(url)
         parsedResponse = response.json()['articles']
