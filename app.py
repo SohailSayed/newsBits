@@ -80,7 +80,6 @@ def source():
             articleData.parse()
             articleText = articleData.text
             
-            # summary = summarize_text(articleText, 130)
             summary = summarize_text(articleText, 130)
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
         else:
@@ -88,6 +87,15 @@ def source():
     else:
         return redirect(url_for(home))
 
+@app.route("/<title>", methods=["POST", "GET"])
+def articleContent(title):
+    if request.method == "POST":
+        articleURL = request.form["articleURL"]
+        articleData = Article(articleURL)
+        articleData.download()
+        articleData.parse()
+        articleText = articleData.text.split('\n')
+        return render_template("articleContent.html", title=title, articleText=articleText, articleURL=articleURL)
 if __name__ == "__main__":
     app.run(debug = True)
     

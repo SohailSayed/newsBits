@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+    <body>
+        <h1>
+            <a href="{{articleURL}}">{{title}}</a>
+        </h1>
+        {% for paragraph in articleText %}
+            <p>{{paragraph}}</p>
+        {% endfor %}
+    </body>
+</html>
