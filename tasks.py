@@ -17,6 +17,7 @@ def query(payload):
 def summarize(text: str, max_len: int) -> str:
     try:
         summary = query({"inputs" : text, "max_length" : max_len,})
+        print(summary[0]["summary_text"])
         return summary[0]["summary_text"]
     except:
         return summarize(text=text[:(len(text) // 2)], max_len=max_len//2) + summarize(text=text[(len(text) // 2):], max_len=max_len//2)
