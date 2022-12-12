@@ -4,7 +4,6 @@ from transformers import pipeline
 from flask import Flask, render_template, request, redirect, url_for, session
 from newspaper import Article
 from dotenv import load_dotenv
-from tasks import summarize
 
 load_dotenv()
 app = Flask(__name__)
@@ -81,7 +80,7 @@ def source():
             articleData.parse()
             articleText = articleData.text
             
-            summary = summarize.delay(articleText, 130)
+            summary = summarize_text(articleText, 130)
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
         else:
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=False)
