@@ -4,6 +4,7 @@ from transformers import pipeline
 from flask import Flask, render_template, request, redirect, url_for, session
 from newspaper import Article
 from dotenv import load_dotenv
+from init_db import insertToDB
 
 load_dotenv()
 app = Flask(__name__)
@@ -57,10 +58,27 @@ def home():
         titles = []
         urls = []
         for article in parsedResponse:
-            titles.append(article['title'])
-            urls.append(article['url'])
+            title = article['title']
+            url = article['url']
+
+            articleData = Article(article['url'])
+            articleData.download()
+            articleData.parse()
+            content = articleData.text
+
+            summary = summarize_text(content, 130)
+
+            insertToDB(title, source, url, content, summary)
+
+            titles.append(title)
+            urls.append(url)
         session["titles"] = titles
         session["urls"] = urls
+
+        
+        
+        
+        
         return redirect(url_for("source"))
     else:
         return render_template("index.html")
@@ -74,13 +92,15 @@ def source():
     if "source" in session:
         source = session["source"]
         if request.method == "POST":
+            summary = "This is sample data, do not take it seriously"
             articleURL = request.form["articleURL"]
-            articleData = Article(articleURL)
-            articleData.download()
-            articleData.parse()
-            articleText = articleData.text
+            # articleData = Article(articleURL)
+            # articleData.download()
+            # articleData.parse()
+            # articleText = articleData.text
             
-            summary = summarize_text(articleText, 130)
+            # summary = summarize_text(articleText, 130)
+
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
         else:
             return render_template("summary.html", source=source, titles=titles, urls=urls, summary=False)
