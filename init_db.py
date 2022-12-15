@@ -5,17 +5,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 conn = psycopg2.connect(
-        host="localhost",
-        database="bitesizednews",
+        host=os.getenv('HOST'),
+        database=os.getenv('DATABASE_URL'),
         user=os.getenv('DB_USERNAME'),
         password=os.getenv('DB_PASSWORD'))
 
 cur = conn.cursor()
 
 #Create table
-def createTable():
-        cur.execute('DROP TABLE IF EXISTS articleData;')
-        cur.execute('CREATE TABLE articleData (id SERIAL PRIMARY KEY,'
+def createTable(cur):
+        cur.execute('CREATE TABLE IF NOT EXISTS articleData (id SERIAL PRIMARY KEY,'
                                         'title varchar NOT NULL,'
                                         'source varchar NOT NULL,'
                                         'url varchar NOT NULL,'
@@ -27,15 +26,21 @@ def createTable():
 def insertToDB(title, source, url, content, summary):
 #Insert data, sample right now
         try:
+
                 load_dotenv()
 
                 conn = psycopg2.connect(
-                        host="localhost",
-                        database="bitesizednews",
+                        host=os.getenv('HOST'),
+                        database=os.getenv('DATABASE_URL'),
                         user=os.getenv('DB_USERNAME'),
                         password=os.getenv('DB_PASSWORD'))
 
+
                 cur = conn.cursor()
+
+                # If articleData table doesn't exist, create one
+                createTable(cur)
+
                 cur.execute('INSERT INTO articleData (title, source, url, content, summary)'
                         'VALUES (%s, %s, %s, %s, %s)',
                         (title,
