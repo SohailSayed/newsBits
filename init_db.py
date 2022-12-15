@@ -2,16 +2,6 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-
-conn = psycopg2.connect(
-        host=os.getenv('HOST'),
-        database=os.getenv('DATABASE_URL'),
-        user=os.getenv('DB_USERNAME'),
-        password=os.getenv('DB_PASSWORD'))
-
-cur = conn.cursor()
-
 #Create table
 def createTable(cur):
         cur.execute('CREATE TABLE IF NOT EXISTS articleData (id SERIAL PRIMARY KEY,'
@@ -31,7 +21,7 @@ def insertToDB(title, source, url, content, summary):
 
                 conn = psycopg2.connect(
                         host=os.getenv('HOST'),
-                        database=os.getenv('DATABASE_URL'),
+                        database=os.getenv('DB_NAME'),
                         user=os.getenv('DB_USERNAME'),
                         password=os.getenv('DB_PASSWORD'))
 
@@ -52,9 +42,11 @@ def insertToDB(title, source, url, content, summary):
 
                 conn.commit()
                 print('data has successfully been inserted')
+                
+                cur.close()
+                conn.close()
         except Exception as e:
                 print(e)
 
-cur.close()
-conn.close()
+
 
