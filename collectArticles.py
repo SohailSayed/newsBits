@@ -20,16 +20,15 @@ for source in sourceList:
     response = requests.get(url)
     articles = response.json()['articles']
     
-    if source == 'cnn':
-        for article in articles:
-            title = article['title']
-            url = article['url']
+    for article in articles:
+        title = article['title']
+        url = article['url']
 
-            articleData = Article(article['url'])
-            articleData.download()
-            articleData.parse()
-            content = articleData.text
+        articleData = Article(article['url'])
+        articleData.download()
+        articleData.parse()
+        content = articleData.text
 
-            summary = summarize_text(content, 130)
+        summary = summarize_text(content, 130)
 
-            insertToDB(title, source, url, content, summary)
+        insertToDB(title, source, url, content, summary)
