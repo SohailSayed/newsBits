@@ -5,21 +5,15 @@
     </head>
     <body>
         <h1>
-            Today's articles from {{source}}:
+            Today's article summaries from {{source}}:
         </h1>
         {% for index in range(titles| length) %}
-            <form action="{{url_for('articleContent', title=titles[index])}}" method="POST">
-                <input type="hidden" value={{urls[index]}} name="articleURL">
-                <button type="submit" class="btn btn-link">{{titles[index]}} [view full text]</button>
+            <form action="{{url_for('articleContent')}}" method="POST">
+                {% set articleData = {'title': titles[index][0], 'url': urls[index][0], 'content': contents[index][0]} %}
+                <input type="hidden" value="{{articleData}}" name="articleData">
+                <button type="submit" class="btn btn-link">{{titles[index][0]}} [view full text]</button>
             </form>
-            {% if summary and articleURL == urls[index] %}
-            <p>{{summary}}</p>
-            {% else %}
-            <form action="/source" method="post">
-                <input type="hidden" value={{urls[index]}} name="articleURL">
-                <input type="submit" value="Generate Summary">
-            </form>
-            {% endif %}
+            <p>{{summaries[index][0]}}</p>
         {% endfor %}
     </body>
 </html>

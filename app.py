@@ -1,100 +1,64 @@
-import requests
+import ast
 import os
-from transformers import pipeline
+import json
 from flask import Flask, render_template, request, redirect, url_for, session
 from newspaper import Article
 from dotenv import load_dotenv
+from insertToDB import pullFromDB
 
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
-API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-headers = {"Authorization": "Bearer {}".format(os.getenv('INFERENCE_API_KEY'))}
-NEWSAPI_API_KEY = os.getenv('NEWSAPI_API_KEY')
+sourceList = ['cbc-news', 'cnn', 'bbc-news', 'reuters', 'associated-press']
+sourceDict = {"CBC":'cbc-news', "CNN":'cnn', "BBC":'bbc-news' ,"Reuters":'reuters' ,"Associated Press":'associated-press'}
 
-def query(payload):
-	response = requests.post(API_URL, headers=headers, json=payload)
-	return response.json()
-
-def summarize_text(text: str, max_len: int) -> str:
-    try:
-        summary = query({"inputs" : text, "max_length" : max_len,})
-        return summary[0]["summary_text"]
-    except:
-        return summarize_text(text=text[:(len(text) // 2)], max_len=max_len//2) + summarize_text(text=text[(len(text) // 2):], max_len=max_len//2)
+#This needs to be done on a daily basis 
+# collectArticles(sourceList)
 
 @app.route("/", methods=["POST", "GET"])
 def home():
     if request.method == "POST":
-        source = request.form['sources']
+        sourceClean = request.form['sources']
+        source = sourceDict[sourceClean]
+
         session["source"] = source
+        # Prettier to display version of the source
+        session["sourceClean"] = sourceClean
 
-        #This is a rudimentary way of calling the selected source, must be changed soon
-        if source == "CBC":
-            url = ('https://newsapi.org/v2/top-headlines?'
-                'sources=cbc-news&'
-                'apiKey={}'.format(NEWSAPI_API_KEY))
-        if source == "CNN":
-            url = ('https://newsapi.org/v2/top-headlines?'
-                'sources=cnn&'
-                'apiKey={}'.format(NEWSAPI_API_KEY))
-        if source == "BBC":
-            url = ('https://newsapi.org/v2/top-headlines?'
-                'sources=bbc-news&'
-                'apiKey={}'.format(NEWSAPI_API_KEY))
-        if source == "Reuters":
-            url = ('https://newsapi.org/v2/top-headlines?'
-                'sources=reuters&'
-                'apiKey={}'.format(NEWSAPI_API_KEY))
-        if source == "Associated Press":
-            url = ('https://newsapi.org/v2/top-headlines?'
-                'sources=associated-press&'
-                'apiKey={}'.format(NEWSAPI_API_KEY))
-        
-        response = requests.get(url)
-        parsedResponse = response.json()['articles']
-
-        titles = []
-        urls = []
-        for article in parsedResponse:
-            titles.append(article['title'])
-            urls.append(article['url'])
-        session["titles"] = titles
-        session["urls"] = urls
         return redirect(url_for("source"))
     else:
         return render_template("index.html")
 
 @app.route("/source", methods=["POST", "GET"])
 def source():
-    if "titles" in session:
-        titles = session["titles"]
-    if "urls" in session:
-        urls = session["urls"]
-    if "source" in session:
+    if "source" in session and "sourceClean" in session:
+        sourceClean = session["sourceClean"]
         source = session["source"]
-        if request.method == "POST":
-            articleURL = request.form["articleURL"]
-            articleData = Article(articleURL)
-            articleData.download()
-            articleData.parse()
-            articleText = articleData.text
-            
-            summary = summarize_text(articleText, 130)
-            return render_template("summary.html", source=source, titles=titles, urls=urls, summary=summary, articleURL=articleURL)
-        else:
-            return render_template("summary.html", source=source, titles=titles, urls=urls, summary=False)
-    else:
-        return redirect(url_for(home))
 
-@app.route("/<title>", methods=["POST", "GET"])
-def articleContent(title):
+        titles = pullFromDB(['title'], source)
+        urls = pullFromDB(['url'], source)
+        summaries = pullFromDB(['summary'], source)
+        contents = pullFromDB(['content'], source)
+
+        session["titles"] = titles
+        session["urls"] = urls
+        session["contents"] = contents
+
+        return render_template("summary.html", source=sourceClean, titles=titles, urls=urls, summaries=summaries, contents=contents)
+    else:
+        return redirect(url_for("home"))
+
+# Fix this, to make sure index is not being displayed as url
+@app.route("/articleContent", methods=["POST", "GET"])
+def articleContent():
     if request.method == "POST":
-        articleURL = request.form["articleURL"]
-        articleData = Article(articleURL)
-        articleData.download()
-        articleData.parse()
-        articleText = articleData.text.split('\n')
-        return render_template("articleContent.html", title=title, articleText=articleText, articleURL=articleURL)
+        # ast.eval() parses the dictionary inside the string, is safer than eval() 
+        articleData = ast.literal_eval(request.form['articleData'])
+        title = articleData['title']
+        url = articleData['url']
+        content = articleData['content']
+        return render_template("articleContent.html", title=title, content=content, url=url)
+    else:
+        return redirect(url_for("home"))
 if __name__ == "__main__":
     app.run(debug = True)

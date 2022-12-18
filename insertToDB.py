@@ -24,7 +24,6 @@ def insertToDB(title, source, url, content, summary):
                         user=os.getenv('DB_USERNAME'),
                         password=os.getenv('DB_PASSWORD'))
 
-
                 cur = conn.cursor()
 
                 # If articleData table doesn't exist, create one
@@ -47,5 +46,26 @@ def insertToDB(title, source, url, content, summary):
         except Exception as e:
                 print(e)
 
+def pullFromDB(columnList, source=None):
+        load_dotenv()
 
+        conn = psycopg2.connect(
+                host=os.getenv('HOST'),
+                database=os.getenv('DB_NAME'),
+                user=os.getenv('DB_USERNAME'),
+                password=os.getenv('DB_PASSWORD'))
+
+        cur = conn.cursor()
+        
+        columns = ",".join(columnList)
+
+        if source:
+                query = "SELECT {0} FROM articleData WHERE date_added = CURRENT_DATE AND source = '{1}'".format(columns, source)
+        else:
+                query = "SELECT {} FROM articleData WHERE date_added = CURRENT_DATE".format(columns)
+        
+        cur.execute(query)
+        pulledData = cur.fetchall()
+
+        return pulledData
 
