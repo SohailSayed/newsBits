@@ -19,17 +19,20 @@ def collectArticles(sourceList):
         articles = response.json()['articles']
         
         for article in articles:
-            title = article['title']
-            url = article['url']
+            try:
+                title = article['title']
+                url = article['url']
 
-            articleData = Article(article['url'])
-            articleData.download()
-            articleData.parse()
-            content = articleData.text
+                articleData = Article(article['url'])
+                articleData.download()
+                articleData.parse()
+                content = articleData.text
 
-            summary = summarize_text(content, 130)
+                summary = summarize_text(content, 130)
 
-            insertToDB(title, source, url, content, summary)
+                insertToDB(title, source, url, content, summary)
+            except:
+                continue
 
 sourceList = ['cbc-news', 'cnn', 'bbc-news', 'reuters', 'associated-press']
 collectArticles(sourceList)
