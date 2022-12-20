@@ -36,10 +36,6 @@ def source(sourceName):
         summaries = pullFromDB(['summary'], source)
         contents = pullFromDB(['content'], source)
 
-        session["titles"] = titles
-        session["urls"] = urls
-        session["contents"] = contents
-
         return render_template("summary.html", source=source, sourceClean=sourceClean, titles=titles, urls=urls, summaries=summaries, contents=contents)
     else:
         return redirect(url_for("home"))
@@ -55,5 +51,6 @@ def articleContent(source, articleTitle):
         return render_template("articleContent.html", title=title, content=content, url=url)
     else:
         return redirect(url_for("home"))
+
 if __name__ == "__main__":
     app.run(debug = True)
