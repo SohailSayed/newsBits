@@ -56,7 +56,7 @@ def articleContent():
         articleData = ast.literal_eval(request.form['articleData'])
         title = articleData['title']
         url = articleData['url']
-        content = articleData['content']
+        content = articleData['content'].split('\n')
         return render_template("articleContent.html", title=title, content=content, url=url)
     else:
         return redirect(url_for("home"))
