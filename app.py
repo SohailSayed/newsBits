@@ -18,7 +18,6 @@ def home():
         sourceClean = request.form['sources']
         source = sourceDict[sourceClean]
 
-        # session["source"] = source
         # Prettier to display version of the source
         session["sourceClean"] = sourceClean
 
@@ -28,7 +27,7 @@ def home():
 
 @app.route("/source/<sourceName>", methods=["POST", "GET"])
 def source(sourceName):
-    if "source" in session and "sourceClean" in session:
+    if "sourceClean" in session:
         sourceClean = session["sourceClean"]
         source=sourceName
 
