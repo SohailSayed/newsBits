@@ -5,10 +5,10 @@
     </head>
     <body>
         <h1>
-            Today's article summaries from {{source}}:
+            Today's article summaries from {{sourceClean}}:
         </h1>
         {% for index in range(titles| length) %}
-            <form action="{{url_for('articleContent')}}" method="POST">
+            <form action="{{url_for('articleContent', source=source, articleTitle=titles[index][0])}}" method="POST">
                 {% set articleData = {'title': titles[index][0], 'url': urls[index][0], 'content': contents[index][0]} %}
                 <input type="hidden" value="{{articleData}}" name="articleData">
                 <button type="submit" class="btn btn-link">{{titles[index][0]}} [view full text]</button>

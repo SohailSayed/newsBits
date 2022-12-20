@@ -2,7 +2,6 @@ import requests
 import os
 from newspaper import Article
 from dotenv import load_dotenv
-# Change this to not import summarize_text in the future from app.py
 from summarizer import summarize_text
 from insertToDB import insertToDB
 
