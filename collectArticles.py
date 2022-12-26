@@ -29,8 +29,9 @@ def collectArticles(sourceList):
                 content = articleData.text
 
                 summary = summarize_text(content, 130)
-
-                insertToDB(title, source, url, content, summary)
+                
+                if len(content) > 300:
+                    insertToDB(title, source, url, content, summary)
             except:
                 continue
 
