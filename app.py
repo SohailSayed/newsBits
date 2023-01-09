@@ -1,9 +1,8 @@
 import ast
 import os
-import json
 from flask import Flask, render_template, request, redirect, url_for, session
 from dotenv import load_dotenv
-from insertToDB import pullFromDB
+from modules.insertToDB import pullFromDB
 
 load_dotenv()
 app = Flask(__name__)
