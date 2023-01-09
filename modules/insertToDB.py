@@ -10,10 +10,12 @@ def createTable(cur):
                                         'url varchar NOT NULL,'
                                         'content varchar NOT NULL,'
                                         'summary varchar(1000) NOT NULL,'
-                                        'date_added date DEFAULT CURRENT_TIMESTAMP);'
+                                        'date_added date DEFAULT CURRENT_TIMESTAMP,'
+                                        'date_published timestamp with time zone,'
+                                        'imageURL varchar);'
                                         )
 
-def insertToDB(title, source, url, content, summary):
+def insertToDB(title, source, url, content, summary, date_published, imageURL):
         try:
 
                 load_dotenv()
@@ -29,18 +31,22 @@ def insertToDB(title, source, url, content, summary):
                 # If articleData table doesn't exist, create one
                 createTable(cur)
 
-                cur.execute('INSERT INTO articleData (title, source, url, content, summary)'
-                        'VALUES (%s, %s, %s, %s, %s)'
+                cur.execute('INSERT INTO articleData (title, source, url, content, summary, date_published, imageURL)'
+                        'VALUES (%s, %s, %s, %s, %s, %s, %s)'
                         'ON CONFLICT (url) DO UPDATE '
                         'SET title = EXCLUDED.title, '
                         '    source = EXCLUDED.source, '
                         '    content = EXCLUDED.content, '
-                        '    summary = EXCLUDED.summary',
+                        '    summary = EXCLUDED.summary,'
+                        '    date_published = EXCLUDED.date_published,'
+                        '    imageURL = EXCLUDED.imageURL',
                         (title,
                         source,
                         url,
                         content,
-                        summary)
+                        summary,  
+                        date_published, 
+                        imageURL)
                         )
 
                 conn.commit()

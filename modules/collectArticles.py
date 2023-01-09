@@ -2,6 +2,7 @@ import requests
 import os
 from newspaper import Article
 from dotenv import load_dotenv
+from datetime import datetime
 from summarizer import summarize_text
 from insertToDB import insertToDB
 
@@ -22,6 +23,12 @@ def collectArticles(sourceList):
             try:
                 title = article['title']
                 url = article['url']
+                imageURL = article['urlToImage']
+
+                dateString = article['publishedAt'].split('.')
+                if len(dateString) > 1: dateString = dateString[0] + "Z"
+                else: dateString = dateString[0]
+                datePublished = datetime.strptime(article['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
 
                 articleData = Article(article['url'])
                 articleData.download()
@@ -31,7 +38,7 @@ def collectArticles(sourceList):
                 summary = summarize_text(content, 130)
                 
                 if len(content) > 300:
-                    insertToDB(title, source, url, content, summary)
+                    insertToDB(title, source, url, content, summary, datePublished, imageURL)
             except:
                 continue
 
