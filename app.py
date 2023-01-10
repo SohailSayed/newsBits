@@ -1,5 +1,6 @@
 import ast
 import os
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session
 from dotenv import load_dotenv
 from modules.insertToDB import pullFromDB
@@ -34,8 +35,10 @@ def source(sourceName):
         urls = pullFromDB(['url'], source)
         summaries = pullFromDB(['summary'], source)
         contents = pullFromDB(['content'], source)
+        imageURLs = pullFromDB(['imageURL'], source)
+        datePublishedList = [date[0].strftime("%b %d %Y") for date in pullFromDB(['date_published'], source)]
 
-        return render_template("summary.html", source=source, sourceClean=sourceClean, titles=titles, urls=urls, summaries=summaries, contents=contents)
+        return render_template("summary.html", source=source, sourceClean=sourceClean, titles=titles, urls=urls, summaries=summaries, contents=contents, imageURLs=imageURLs, datePublishedList=datePublishedList)
     else:
         return redirect(url_for("home"))
 

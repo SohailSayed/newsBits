@@ -28,7 +28,7 @@ def collectArticles(sourceList):
                 dateString = article['publishedAt'].split('.')
                 if len(dateString) > 1: dateString = dateString[0] + "Z"
                 else: dateString = dateString[0]
-                datePublished = datetime.strptime(article['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+                datePublished = datetime.strptime(dateString, '%Y-%m-%dT%H:%M:%SZ')
 
                 articleData = Article(article['url'])
                 articleData.download()
@@ -39,7 +39,8 @@ def collectArticles(sourceList):
                 
                 if len(content) > 300:
                     insertToDB(title, source, url, content, summary, datePublished, imageURL)
-            except:
+            except Exception as e:
+                print(e)
                 continue
 
 sourceList = ['cbc-news', 'cnn', 'bbc-news', 'reuters', 'associated-press']
