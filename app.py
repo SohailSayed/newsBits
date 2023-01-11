@@ -15,15 +15,15 @@ sourceDict = {"CBC":'cbc-news', "CNN":'cnn', "BBC":'bbc-news' ,"Reuters":'reuter
 @app.route("/", methods=["POST", "GET"])
 def home():
     if request.method == "POST":
-        sourceClean = request.form['sources']
-        source = sourceDict[sourceClean]
+        if 'sources' in request.form:
+            sourceClean = request.form['sources']
+            source = sourceDict[sourceClean]
 
-        # Prettier to display version of the source
-        session["sourceClean"] = sourceClean
+            # Prettier to display version of the source
+            session["sourceClean"] = sourceClean
 
-        return redirect(url_for("source", sourceName=source))
-    else:
-        return render_template("index.html")
+            return redirect(url_for("source", sourceName=source))
+    return render_template("index.html")
 
 @app.route("/source/<sourceName>", methods=["POST", "GET"])
 def source(sourceName):
@@ -37,8 +37,8 @@ def source(sourceName):
         contents = pullFromDB(['content'], source)
         imageURLs = pullFromDB(['imageURL'], source)
         datePublishedList = [date[0].strftime("%b %d %Y") for date in pullFromDB(['date_published'], source)]
-
-        return render_template("summary.html", source=source, sourceClean=sourceClean, titles=titles, urls=urls, summaries=summaries, contents=contents, imageURLs=imageURLs, datePublishedList=datePublishedList)
+        todaysDate = datetime.today().strftime("%A, %b %d, %Y")
+        return render_template("summary.html", source=source, sourceClean=sourceClean, titles=titles, urls=urls, summaries=summaries, contents=contents, imageURLs=imageURLs, datePublishedList=datePublishedList,todaysDate=todaysDate)
     else:
         return redirect(url_for("home"))
 
