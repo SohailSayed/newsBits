@@ -1,11 +1,26 @@
 <!doctype html>
 <html>
+    <head>
+        <link href="{{ url_for('static', filename='styleContent.css')}}" rel="stylesheet" type="text/css">
+    </head>
     <body>
-        <h1>
+        <div class="nav">
+            <form action="{{url_for('home')}}" method="POST">
+            <button type="submit" class="homeButton">Home</button>
+            </form>
+            <p4>{{todaysDate}}</p4>
+        </div>
+        <div class="bodyContent">
+            <h1>
             <a href="{{url}}">{{title}}</a>
-        </h1>
-        {% for paragraph in content %}
-            <p>{{paragraph}}</p>
-        {% endfor %}
+            </h1>
+        </div>
+        <hr class="hr1">
+        <div class="bodyContent">
+            {% for paragraph in content %}
+                <p>{{paragraph}}</p>
+            {% endfor %}
+        </div>
+        
     </body>
 </html>

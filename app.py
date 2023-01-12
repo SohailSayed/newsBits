@@ -50,7 +50,8 @@ def articleContent(source, articleTitle):
         title = articleData['title']
         url = articleData['url']
         content = articleData['content'].split('\n')
-        return render_template("articleContent.html", title=title, content=content, url=url)
+        todaysDate = datetime.today().strftime("%A, %b %d, %Y")
+        return render_template("articleContent.html", title=title, content=content, url=url, todaysDate=todaysDate)
     else:
         return redirect(url_for("home"))
 
