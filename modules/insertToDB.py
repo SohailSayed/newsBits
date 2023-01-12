@@ -38,7 +38,7 @@ def insertToDB(title, source, url, content, summary, date_published, imageURL):
                         '    source = EXCLUDED.source, '
                         '    content = EXCLUDED.content, '
                         '    summary = EXCLUDED.summary,'
-                        '    date_added = CURRENT_TIMESTAMP,'
+                        # '    date_added = CURRENT_TIMESTAMP,'
                         '    date_published = EXCLUDED.date_published,'
                         '    imageURL = EXCLUDED.imageURL',
                         (title,
