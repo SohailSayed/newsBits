@@ -1,0 +1,47 @@
+body {
+    font-family: 'Inter', sans-serif;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.selectbox{
+    border:0px;
+    background-color: #D9D9D9;
+    border-radius: 26px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.submitBtn{
+    border:0px;
+    background: #5EAD39;
+    border-radius: 8px;
+    color: white;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.homeText{
+    font-size: 35px;
+}
+
+.bottomText{
+    margin-top: 30px;
+}
+
+.topHomeSentence{
+    margin-bottom: -35px;
+}
+
+h1{
+    margin-top: 100px;
+    margin-bottom: 50px;
+}

@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <title>NewsBits</title>
+        <link href="{{ url_for('static', filename='styleHome.css')}}" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <h1>Bite Sized News</h1>
+        <div class="homeText">
+            <p class="topHomeSentence">Select a news source.</p>
+            <p>We’ll generate <b>tweet sized summaries</b> of their <b>latest articles.</b></p>
+        </div>
+        <form action="#" method="post"  >
+            <label for="sources"></label>
+            <select name="sources" id="sources" class="selectbox">
+              <option value="CBC">CBC</option>
+              <option value="BBC">BBC</option>
+              <option value="CNN">CNN</option>
+              <option value="Reuters">Reuters</option>
+              <option value="Associated Press">Associated Press</option>
+            </select>
+            <br><br>
+            <input type="submit" value="Submit" class="submitBtn">
+          </form>
+          <break></break>
+          <p class="bottomText"><i>Built by Sohail Sayed. To keep up with updates check out my website <a href="https://sohailsayed.ca/">sohailsayed.ca</a></i></p>
+    </body>
+</html>

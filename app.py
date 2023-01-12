@@ -23,7 +23,7 @@ def home():
             session["sourceClean"] = sourceClean
 
             return redirect(url_for("source", sourceName=source))
-    return render_template("index.html")
+    return render_template("homepage.html")
 
 @app.route("/source/<sourceName>", methods=["POST", "GET"])
 def source(sourceName):
