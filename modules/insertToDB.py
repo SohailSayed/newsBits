@@ -35,24 +35,32 @@ def insertToDB(title, source, url, content, summary, date_published, imageURL):
                 date_added = dt = datetime.now(timezone.utc)
 
                 cur.execute('INSERT INTO articleData (title, source, url, content, summary, date_added, date_published, imageURL)'
-                        'VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
+                        'VALUES (%s, %s, %s, %s, %s, %s, %s)'
                         'ON CONFLICT (url) DO UPDATE '
                         'SET title = EXCLUDED.title, '
                         '    source = EXCLUDED.source, '
                         '    content = EXCLUDED.content, '
                         '    summary = EXCLUDED.summary,'
                         '    date_added = EXCLUDED.date_added,'
-                        '    date_published = EXCLUDED.date_published,'
+                        # '    date_published = EXCLUDED.date_published,'
                         '    imageURL = EXCLUDED.imageURL',
                         (title,
                         source,
                         url,
                         content,
                         summary,  
-                        date_published, 
                         date_added,
                         imageURL)
                         )
+                        # (title,
+                        # source,
+                        # url,
+                        # content,
+                        # summary,  
+                        # date_published, 
+                        # date_added,
+                        # imageURL)
+                        # )
 
                 conn.commit()
                 print('Article data has successfully been inserted')
