@@ -1,6 +1,7 @@
 import psycopg2
 import os
 from dotenv import load_dotenv
+from datetime import datetime, timezone
 
 #Create table
 def createTable(cur):
@@ -31,14 +32,16 @@ def insertToDB(title, source, url, content, summary, date_published, imageURL):
                 # If articleData table doesn't exist, create one
                 createTable(cur)
 
-                cur.execute('INSERT INTO articleData (title, source, url, content, summary, date_published, imageURL)'
-                        'VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                date_added = dt = datetime.now(timezone.utc)
+
+                cur.execute('INSERT INTO articleData (title, source, url, content, summary, date_added, date_published, imageURL)'
+                        'VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
                         'ON CONFLICT (url) DO UPDATE '
                         'SET title = EXCLUDED.title, '
                         '    source = EXCLUDED.source, '
                         '    content = EXCLUDED.content, '
                         '    summary = EXCLUDED.summary,'
-                        '    date_added = EXCLUDED.CURRENT_TIMESTAMP,'
+                        '    date_added = EXCLUDED.date_added,'
                         '    date_published = EXCLUDED.date_published,'
                         '    imageURL = EXCLUDED.imageURL',
                         (title,
@@ -47,6 +50,7 @@ def insertToDB(title, source, url, content, summary, date_published, imageURL):
                         content,
                         summary,  
                         date_published, 
+                        date_added,
                         imageURL)
                         )
 
