@@ -32,9 +32,9 @@ def insertToDB(title, source, url, content, summary, date_published, imageURL):
                 # If articleData table doesn't exist, create one
                 createTable(cur)
 
-                date_added = dt = datetime.now(timezone.utc)
+                date_added = datetime.now(timezone.utc)
 
-                cur.execute('INSERT INTO articleData (title, source, url, content, summary, date_added, date_published, imageURL)'
+                cur.execute('INSERT INTO articleData (title, source, url, content, summary, date_published, imageURL)'
                         'VALUES (%s, %s, %s, %s, %s, %s, %s)'
                         'ON CONFLICT (url) DO UPDATE '
                         'SET title = EXCLUDED.title, '
