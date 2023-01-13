@@ -13,7 +13,8 @@ def createTable(cur):
                                         'summary varchar(1000) NOT NULL,'
                                         'date_added date DEFAULT CURRENT_TIMESTAMP,'
                                         'date_published timestamp with time zone,'
-                                        'imageURL varchar);'
+                                        'imageURL varchar,'
+                                        'UNIQUE(url));'
                                         )
 
 def insertToDB(title, source, url, content, summary, date_published, imageURL):
