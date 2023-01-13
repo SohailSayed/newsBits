@@ -32,7 +32,7 @@ def insertToDB(title, source, url, content, summary, date_published, imageURL):
                 createTable(cur)
 
                 cur.execute('INSERT INTO articleData (title, source, url, content, summary, date_published, imageURL)'
-                        'VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                        'VALUES (%s, %s, %s, %s, %s, %s, %s)',
                         # 'ON CONFLICT (url) DO UPDATE '
                         # 'SET title = EXCLUDED.title, '
                         # '    source = EXCLUDED.source, '
