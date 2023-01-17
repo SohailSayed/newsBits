@@ -50,8 +50,8 @@ def insertToDB(title, source, url, content, summary, date_published, imageURL):
                         url,
                         content,
                         summary,  
-                        date_published, 
                         date_added,
+                        date_published, 
                         imageURL)
                         )
 
