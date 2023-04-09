@@ -33,6 +33,9 @@ def insertToDB(title, source, url, content, summary, date_published, imageURL):
                 # If articleData table doesn't exist, create one
                 createTable(cur)
 
+                # Delete articles older than 1 month
+                deleteOldArticles(cur)
+
                 date_added = datetime.now(timezone.utc)
 
                 cur.execute('INSERT INTO articleData (title, source, url, content, summary, date_added, date_published, imageURL)'
@@ -85,4 +88,12 @@ def pullFromDB(columnList, source=None):
         pulledData = cur.fetchall()
 
         return pulledData
+
+def deleteOldArticles(cur):
+        try:
+                cur.execute("DELETE FROM articledata WHERE date_added < (CURRENT_DATE - INTERVAL '1 months');")
+                print('Article data has successfully been inserted')
+        except Exception as e:
+                print(e)
+
 
