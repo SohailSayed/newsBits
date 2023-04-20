@@ -92,7 +92,7 @@ def pullFromDB(columnList, source=None):
 def deleteOldArticles(cur):
         try:
                 cur.execute("DELETE FROM articledata WHERE date_added < (CURRENT_DATE - INTERVAL '1 months');")
-                print('Article data has successfully been inserted')
+                print('Old article data has been deleted')
         except Exception as e:
                 print(e)
 
