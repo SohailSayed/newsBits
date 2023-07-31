@@ -7,7 +7,7 @@ from modules.insertToDB import pullFromDB
 
 load_dotenv()
 app = Flask(__name__)
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
 
 sourceList = ['cbc-news', 'cnn', 'bbc-news', 'reuters', 'associated-press']
