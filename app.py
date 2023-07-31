@@ -40,7 +40,9 @@ def source(sourceName):
         todaysDate = datetime.today().strftime("%A, %b %d, %Y")
         return render_template("summary.html", source=source, sourceClean=sourceClean, titles=titles, urls=urls, summaries=summaries, contents=contents, imageURLs=imageURLs, datePublishedList=datePublishedList,todaysDate=todaysDate)
     else:
-        return redirect(url_for("home"))
+        # return redirect(url_for("home")) Temporary turn off for debugging
+        return "<p>Hello, World!</p>"
+        
 
 @app.route("/source/<source>/<articleTitle>", methods=["POST", "GET"])
 def articleContent(source, articleTitle):
