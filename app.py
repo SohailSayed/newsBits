@@ -7,6 +7,7 @@ from modules.insertToDB import pullFromDB
 
 load_dotenv()
 app = Flask(__name__)
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
 
 sourceList = ['cbc-news', 'cnn', 'bbc-news', 'reuters', 'associated-press']
@@ -40,9 +41,7 @@ def source(sourceName):
         todaysDate = datetime.today().strftime("%A, %b %d, %Y")
         return render_template("summary.html", source=source, sourceClean=sourceClean, titles=titles, urls=urls, summaries=summaries, contents=contents, imageURLs=imageURLs, datePublishedList=datePublishedList,todaysDate=todaysDate)
     else:
-        # return redirect(url_for("home")) Temporary turn off for debugging
-        return "<p>Hello, World!</p>"
-        
+        return redirect(url_for("home")) 
 
 @app.route("/source/<source>/<articleTitle>", methods=["POST", "GET"])
 def articleContent(source, articleTitle):
