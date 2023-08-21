@@ -1,30 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Condensed News</title>
-        <link href="{{ url_for('static', filename='styleHome.css')}}" rel="stylesheet" type="text/css">
-        <link rel="icon" type="image/x-icon" href="/static/BiteSizedNewsFavicon.png">
-    </head>
-    <body>
-        <h1>Condensed News</h1>
-        <div class="homeText">
-            <p class="topHomeSentence">Select a news source.</p>
-            <p>We’ll generate <b>tweet sized summaries</b> of their <b>latest articles.</b></p>
-        </div>
-        <form action="#" method="post"  >
-            <label for="sources"></label>
-            <select name="sources" id="sources" class="selectbox">
-              <option value="Reuters">Reuters</option>
-              <option value="Associated Press">Associated Press</option>
-              <option value="BBC">BBC</option>
-              <option value="CNN">CNN</option>
-              <option value="CBC">CBC</option>
-            </select>
-            <br><br>
-            <input type="submit" value="Submit" class="submitBtn">
-          </form>
-          <break></break>
-          <p class="bottomText"><i>Built by Sohail Sayed. To keep up with updates check out my website <a href="https://sohailsayed.ca/">sohailsayed.ca</a></i></p>
-          <p class="bottomText"><i>PS: I'm seeking a Winter 2024 internship!</i></p>
-    </body>
+  <head>
+    <title>Condensed News</title>
+    <link
+      href="{{ url_for('static', filename='styleHome.css')}}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/static/BiteSizedNewsFavicon.png"
+    />
+  </head>
+  <body>
+    <h1>Condensed News</h1>
+    <div class="homeText">
+      <p class="topHomeSentence">Select a news source.</p>
+      <p>
+        We’ll generate <b>tweet sized summaries</b> of their
+        <b>latest articles.</b>
+      </p>
+    </div>
+    <form action="#" method="post">
+      <label for="sources"></label>
+      <select name="sources" id="sources" class="selectbox">
+        <option value="Reuters">Reuters</option>
+        <option value="Associated Press">Associated Press</option>
+        <option value="BBC">BBC</option>
+        <option value="CNN">CNN</option>
+        <option value="CBC">CBC</option>
+      </select>
+      <br /><br />
+      <input type="submit" value="Submit" class="submitBtn" />
+    </form>
+    <break></break>
+    <p class="bottomText">
+      <i
+        >Built by Sohail Sayed. To keep up with updates check out my website
+        <a href="https://www.sohailsayed.com/">sohailsayed.com</a></i
+      >
+    </p>
+    <p class="bottomText"><i>PS: I'm seeking a Winter 2024 internship!</i></p>
+  </body>
 </html>
