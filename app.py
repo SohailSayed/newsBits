@@ -11,8 +11,8 @@ app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
 
-sourceList = ['cbc-news', 'cnn', 'bbc-news', 'reuters', 'associated-press']
-sourceDict = {"CBC":'cbc-news', "CNN":'cnn', "BBC":'bbc-news' ,"Reuters":'reuters' ,"Associated Press":'associated-press'}
+sourceList = ['cbc-news', 'cnn', 'bbc-news', 'associated-press']
+sourceDict = {"CBC":'cbc-news', "CNN":'cnn', "BBC":'bbc-news' ,"Associated Press":'associated-press'}
 
 @app.route("/", methods=["POST", "GET"])
 def home():
