@@ -43,5 +43,5 @@ def collectArticles(sourceList):
                 print(e)
                 continue
 
-sourceList = ['associated-press', 'bbc-news', 'cnn', 'cbc-news']
+sourceList = ['reuters', 'associated-press', 'bbc-news', 'cnn', 'cbc-news']
 collectArticles(sourceList)
